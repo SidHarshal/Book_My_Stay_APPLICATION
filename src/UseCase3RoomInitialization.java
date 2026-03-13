@@ -1,7 +1,4 @@
-import java.util.*;
-
-
-class UseCase2RoomInitialization{
+class UseCase3RoomInitialization {
 
 
     public static void welcomeMessage(){
