@@ -18,7 +18,11 @@ class UseCase2RoomInitialization{
     public static void main(String[] args){
         welcomeMessage();
         SingleRoom SngR = new SingleRoom();
-        DoubleRoom DnR = new DoubleRoom();
+        DoubleRoom DbR = new DoubleRoom();
         SuiteRoom StR = new SuiteRoom();
+
+        SngR.displayRoomDetails();
+        DbR.displayRoomDetails();
+        StR.displayRoomDetails();
     }
 }
