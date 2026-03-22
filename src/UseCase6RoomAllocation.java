@@ -1,4 +1,4 @@
-class UseCase5BookingRequestQueue {
+class UseCase6RoomAllocation {
 
     public static void welcomeMessage() {
         System.out.println("=================================================");
