@@ -47,5 +47,20 @@ class UseCase6RoomAllocation {
 
         }
 
+        System.out.println("\nRoom Allocation Processing\n");
+
+        RoomAllocationService allocationService = new RoomAllocationService();
+
+        // Re-create queue again OR reuse logic
+        BookingRequestQueue bookingQueue2 = new BookingRequestQueue();
+
+        bookingQueue2.addRequest(new Reservation("Abhi", "SingleRoom"));
+        bookingQueue2.addRequest(new Reservation("Subha", "DoubleRoom"));
+        bookingQueue2.addRequest(new Reservation("Vanmathi", "SuiteRoom"));
+
+        while (bookingQueue2.hasPendingRequests()) {
+            Reservation r = bookingQueue2.getNextRequest();
+            allocationService.allocateRoom(r, inventory);
+        }
     }
 }
