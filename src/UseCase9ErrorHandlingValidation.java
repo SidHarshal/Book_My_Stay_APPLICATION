@@ -1,4 +1,6 @@
-class UseCase8BookingHistoryReport {
+import java.util.Scanner;
+
+class UseCase9ErrorHandlingValidation {
 
     public static void welcomeMessage() {
         System.out.println("=================================================");
@@ -7,7 +9,7 @@ class UseCase8BookingHistoryReport {
         System.out.println("Find and book the perfect stay for your trip!");
         System.out.println();
         System.out.println("Author: Harshal");
-        System.out.println("Version: 8.1");
+        System.out.println("Version: 9.1");
         System.out.println("-------------------------------------------------");
         System.out.println("            Hotel Room Inventory Status");
 
@@ -84,16 +86,45 @@ class UseCase8BookingHistoryReport {
         System.out.println("Reservation ID: " + reservationId);
         System.out.println("Total Add-On Cost: " + totalCost);
 
-    System.out.println("\nBooking History and Reporting\n");
+        System.out.println("\nBooking History and Reporting\n");
 
-    BookingHistory history = new BookingHistory();
+        BookingHistory history = new BookingHistory();
 
-    // Add confirmed reservations (same as earlier)
-    history.addReservation(new Reservation("Abhi", "Single"));
-    history.addReservation(new Reservation("Subha", "Double"));
-    history.addReservation(new Reservation("Vanmathi", "Suite"));
+        // Add confirmed reservations (same as earlier)
+        history.addReservation(new Reservation("Abhi", "Single"));
+        history.addReservation(new Reservation("Subha", "Double"));
+        history.addReservation(new Reservation("Vanmathi", "Suite"));
 
-    BookingReportService reportService = new BookingReportService();
-    reportService.generateReport(history);
+        BookingReportService reportService = new BookingReportService();
+        reportService.generateReport(history);
+
+        System.out.println("\nBooking Validation\n");
+
+        Scanner scanner = new Scanner(System.in);
+
+        ReservationValidator validator = new ReservationValidator();
+
+        try {
+            System.out.print("Enter guest name: ");
+            String name = scanner.nextLine();
+
+            System.out.print("Enter room type (Single/Double/Suite): ");
+            String roomType = scanner.nextLine();
+
+            // Validate input
+            validator.validate(name, roomType, inventory);
+
+            // If valid → create reservation
+            Reservation r = new Reservation(name, roomType);
+
+            bookingQueue.addRequest(r);
+
+            System.out.println("Booking request added successfully.");
+
+        } catch (InvalidBookingException e) {
+            System.out.println("Booking failed: " + e.getMessage());
+        } finally {
+            scanner.close();
+        }
     }
 }
