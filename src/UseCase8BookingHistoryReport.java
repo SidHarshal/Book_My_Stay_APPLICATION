@@ -1,4 +1,4 @@
-class UseCase7AddOnServiceSelection {
+class UseCase8BookingHistoryReport {
 
     public static void welcomeMessage() {
         System.out.println("=================================================");
@@ -7,7 +7,7 @@ class UseCase7AddOnServiceSelection {
         System.out.println("Find and book the perfect stay for your trip!");
         System.out.println();
         System.out.println("Author: Harshal");
-        System.out.println("Version: 7.1");
+        System.out.println("Version: 8.1");
         System.out.println("-------------------------------------------------");
         System.out.println("            Hotel Room Inventory Status");
 
@@ -65,23 +65,35 @@ class UseCase7AddOnServiceSelection {
 
         System.out.println("\nAdd-On Service Selection\n");
 
-AddOnServiceManager serviceManager = new AddOnServiceManager();
+        AddOnServiceManager serviceManager = new AddOnServiceManager();
 
-// Use a reservation ID from allocation
-String reservationId = "Single-1";
+        // Use a reservation ID from allocation
+        String reservationId = "Single-1";
 
-// Create services
-AddOnService s1 = new AddOnService("Food", 1000);
-AddOnService s2 = new AddOnService("Laundry", 500);
+        // Create services
+        AddOnService s1 = new AddOnService("Food", 1000);
+        AddOnService s2 = new AddOnService("Laundry", 500);
 
-// Add services
-serviceManager.addService(reservationId, s1);
-serviceManager.addService(reservationId, s2);
+        // Add services
+        serviceManager.addService(reservationId, s1);
+        serviceManager.addService(reservationId, s2);
 
-// Calculate total
-double totalCost = serviceManager.calculateTotalServiceCost(reservationId);
+        // Calculate total
+        double totalCost = serviceManager.calculateTotalServiceCost(reservationId);
 
-System.out.println("Reservation ID: " + reservationId);
-System.out.println("Total Add-On Cost: " + totalCost);
+        System.out.println("Reservation ID: " + reservationId);
+        System.out.println("Total Add-On Cost: " + totalCost);
+
+    System.out.println("\nBooking History and Reporting\n");
+
+    BookingHistory history = new BookingHistory();
+
+    // Add confirmed reservations (same as earlier)
+    history.addReservation(new Reservation("Abhi", "Single"));
+    history.addReservation(new Reservation("Subha", "Double"));
+    history.addReservation(new Reservation("Vanmathi", "Suite"));
+
+    BookingReportService reportService = new BookingReportService();
+    reportService.generateReport(history);
     }
 }
