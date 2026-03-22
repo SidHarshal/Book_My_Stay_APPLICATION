@@ -1,4 +1,4 @@
-class UseCase4RoomSearch {
+class UseCase5BookingRequestQueue {
 
     public static void welcomeMessage() {
         System.out.println("=================================================");
