@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-class UseCase11ConcurrentBookingSimulation {
+class UseCase12DataPersistenceRecovery {
 
     public static void welcomeMessage() {
         System.out.println("=================================================");
@@ -9,7 +9,7 @@ class UseCase11ConcurrentBookingSimulation {
         System.out.println("Find and book the perfect stay for your trip!");
         System.out.println();
         System.out.println("Author: Harshal");
-        System.out.println("Version: 9.1");
+        System.out.println("Version: 12.1");
         System.out.println("-------------------------------------------------");
         System.out.println("            Hotel Room Inventory Status");
 
@@ -129,66 +129,82 @@ class UseCase11ConcurrentBookingSimulation {
 
         System.out.println("\nBooking Cancellation\n");
 
-    CancellationService cancellationService = new CancellationService();
+        CancellationService cancellationService = new CancellationService();
 
-    // Register booking (from allocation)
-    String cancelReservationId = "Single-1";
-    cancellationService.registerBooking(cancelReservationId, "SingleRoom");
+        // Register booking (from allocation)
+        String cancelReservationId = "Single-1";
+        cancellationService.registerBooking(cancelReservationId, "SingleRoom");
 
-    // Cancel booking
-    cancellationService.cancelBooking(cancelReservationId, inventory);
+        // Cancel booking
+        cancellationService.cancelBooking(cancelReservationId, inventory);
 
-    // Show rollback history
-    cancellationService.showRollbackHistory();
+        // Show rollback history
+        cancellationService.showRollbackHistory();
 
-    // Show updated inventory
-    System.out.println("\nUpdated Single Room Availability: " + inventory.getRoomAvailability().get("SingleRoom"));
+        // Show updated inventory
+        System.out.println("\nUpdated Single Room Availability: " + inventory.getRoomAvailability().get("SingleRoom"));
 
-    System.out.println("\nConcurrent Booking Simulation\n");
+        System.out.println("\nConcurrent Booking Simulation\n");
 
-    // Create fresh inventory (small values to see effect)
-    RoomInventory inventory2 = new RoomInventory();
-    inventory2.updateAvailability("SingleRoom", 2);
-    inventory2.updateAvailability("DoubleRoom", 1);
-    inventory2.updateAvailability("SuiteRoom", 1);
+        // Create fresh inventory (small values to see effect)
+        RoomInventory inventory2 = new RoomInventory();
+        inventory2.updateAvailability("SingleRoom", 2);
+        inventory2.updateAvailability("DoubleRoom", 1);
+        inventory2.updateAvailability("SuiteRoom", 1);
 
-    // Shared queue
-    BookingRequestQueue bookingQueue3 = new BookingRequestQueue();
+        // Shared queue
+        BookingRequestQueue bookingQueue3 = new BookingRequestQueue();
 
-    bookingQueue3.addRequest(new Reservation("Abhi", "SingleRoom"));
-    bookingQueue3.addRequest(new Reservation("Vanmathi", "DoubleRoom"));
-    bookingQueue3.addRequest(new Reservation("Kural", "SuiteRoom"));
-    bookingQueue3.addRequest(new Reservation("Subha", "SingleRoom"));
+        bookingQueue3.addRequest(new Reservation("Abhi", "SingleRoom"));
+        bookingQueue3.addRequest(new Reservation("Vanmathi", "DoubleRoom"));
+        bookingQueue3.addRequest(new Reservation("Kural", "SuiteRoom"));
+        bookingQueue3.addRequest(new Reservation("Subha", "SingleRoom"));
 
-    // Shared allocation service
-    RoomAllocationService allocationService2 = new RoomAllocationService();
+        // Shared allocation service
+        RoomAllocationService allocationService2 = new RoomAllocationService();
 
-    // Create threads
-    Thread t1 = new Thread(
-            new ConcurrentBookingProcessor(bookingQueue3, inventory2, allocationService2)
-    );
+        // Create threads
+        Thread t1 = new Thread(
+                new ConcurrentBookingProcessor(bookingQueue3, inventory2, allocationService2));
 
-    Thread t2 = new Thread(
-            new ConcurrentBookingProcessor(bookingQueue3, inventory2, allocationService2)
-    );
+        Thread t2 = new Thread(
+                new ConcurrentBookingProcessor(bookingQueue3, inventory2, allocationService2));
 
-    // Start threads
-    t1.start();
-    t2.start();
+        // Start threads
+        t1.start();
+        t2.start();
 
-    // Wait for completion
-    try {
-        t1.join();
-        t2.join();
-    } catch (InterruptedException e) {
-        System.out.println("Thread execution interrupted.");
-    }
+        // Wait for completion
+        try {
+            t1.join();
+            t2.join();
+        } catch (InterruptedException e) {
+            System.out.println("Thread execution interrupted.");
+        }
 
-    // Show remaining inventory
-    System.out.println("\nRemaining Inventory:");
-    System.out.println("Single: " + inventory2.getRoomAvailability().get("SingleRoom"));
-    System.out.println("Double: " + inventory2.getRoomAvailability().get("DoubleRoom"));
-    System.out.println("Suite: " + inventory2.getRoomAvailability().get("SuiteRoom"));
+        // Show remaining inventory
+        System.out.println("\nRemaining Inventory:");
+        System.out.println("Single: " + inventory2.getRoomAvailability().get("SingleRoom"));
+        System.out.println("Double: " + inventory2.getRoomAvailability().get("DoubleRoom"));
+        System.out.println("Suite: " + inventory2.getRoomAvailability().get("SuiteRoom"));
+
+        System.out.println("\nSystem Recovery\n");
+
+        FilePersistenceService persistenceService = new FilePersistenceService();
+
+        String filePath = "inventory.txt";
+
+        // Load inventory
+        persistenceService.loadInventory(inventory, filePath);
+
+        // Show current inventory
+        System.out.println("\nCurrent Inventory:");
+        System.out.println("Single: " + inventory.getRoomAvailability().get("SingleRoom"));
+        System.out.println("Double: " + inventory.getRoomAvailability().get("DoubleRoom"));
+        System.out.println("Suite: " + inventory.getRoomAvailability().get("SuiteRoom"));
+
+        // Save inventory
+        persistenceService.saveInventory(inventory, filePath);
 
     }
 }
