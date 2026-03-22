@@ -15,16 +15,16 @@ class UseCase4RoomSearch {
 
     public static void main(String[] args) {
         welcomeMessage();
-        SingleRoom SngR = new SingleRoom();
-        DoubleRoom DbR = new DoubleRoom();
-        SuiteRoom StR = new SuiteRoom();
+        SingleRoom Single = new SingleRoom();
+        DoubleRoom Double = new DoubleRoom();
+        SuiteRoom Suite = new SuiteRoom();
         RoomInventory inventory = new RoomInventory();
         RoomSearchService searchService = new RoomSearchService();
 
         // SngR.displayRoomDetails();
         // DbR.displayRoomDetails();
         // StR.displayRoomDetails();
-        searchService.searchAvailableRooms(inventory, SngR, DbR, StR);
+        searchService.searchAvailableRooms(inventory, Single, Double, Suite);
 
         System.out.println("Booking Request Queue - \n");
 
@@ -46,7 +46,6 @@ class UseCase4RoomSearch {
             System.out.println("-------------------------------------------------");
 
         }
-        System.out.println("-------------------------------------------------");
 
     }
 }
