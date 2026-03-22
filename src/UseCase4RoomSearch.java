@@ -20,10 +20,33 @@ class UseCase4RoomSearch {
         SuiteRoom StR = new SuiteRoom();
         RoomInventory inventory = new RoomInventory();
         RoomSearchService searchService = new RoomSearchService();
-        
+
         // SngR.displayRoomDetails();
         // DbR.displayRoomDetails();
         // StR.displayRoomDetails();
         searchService.searchAvailableRooms(inventory, SngR, DbR, StR);
+
+        System.out.println("Booking Request Queue - \n");
+
+        BookingRequestQueue bookingQueue = new BookingRequestQueue();
+
+        Reservation r1 = new Reservation("Abhi", "Single");
+        Reservation r2 = new Reservation("Subha", "Double");
+        Reservation r3 = new Reservation("Vanmathi", "Suite");
+
+        bookingQueue.addRequest(r1);
+        bookingQueue.addRequest(r2);
+        bookingQueue.addRequest(r3);
+
+        while (bookingQueue.hasPendingRequests()) {
+            Reservation r = bookingQueue.getNextRequest();
+
+            System.out.println("Guest Name: " + r.getGuestName());
+            System.out.println("Room Type: " + r.getRoomType());
+            System.out.println("-------------------------------------------------");
+
+        }
+        System.out.println("-------------------------------------------------");
+
     }
 }
