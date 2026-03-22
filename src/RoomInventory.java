@@ -14,7 +14,7 @@ public class RoomInventory {
         roomAvailability.put("DoubleRoom", 50);
         roomAvailability.put("SuiteRoom", 10);
     }
-
+                                                
     public Map<String, Integer> getRoomAvailability(){
         return roomAvailability;
     }
